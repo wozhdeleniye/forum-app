@@ -4,6 +4,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/spring_db
     user: postgres
     password: igromir.04
+    enabled: true
   datasource:
     url: jdbc:postgresql://localhost:5432/spring_db
     username: postgres
@@ -11,7 +12,11 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
+  application:
+    name: user
 
 server:
   port: 8011
+
+spring.config.import: classpath:/application.yaml

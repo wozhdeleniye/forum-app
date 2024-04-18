@@ -5,10 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.tsu.hits.forum.Topic.dto.CreateUpdateTopicDto;
-import ru.tsu.hits.forum.Topic.dto.TopicDto;
-import ru.tsu.hits.forum.Topic.dto.TopicPagedDto;
-import ru.tsu.hits.forum.Topic.dto.converter.TopicConverter;
+import ru.tsu.hits.common.dto.topicDto.CreateUpdateTopicDto;
+import ru.tsu.hits.common.dto.topicDto.TopicDto;
+import ru.tsu.hits.common.dto.topicDto.TopicPagedDto;
+import ru.tsu.hits.forum.Topic.converter.TopicConverter;
 import ru.tsu.hits.forum.Topic.entity.TopicEntity;
 import ru.tsu.hits.forum.Topic.service.TopicService;
 
@@ -16,7 +16,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/topic")
+@RequestMapping("/api/forum/topic")
 @RequiredArgsConstructor
 public class TopicController {
     private final TopicService topicService;

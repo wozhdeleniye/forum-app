@@ -4,21 +4,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
-import ru.tsu.hits.forum.Message.dto.CreateUpdateMessageDto;
-import ru.tsu.hits.forum.Message.dto.MessageDto;
-import ru.tsu.hits.forum.Message.dto.MessageSearchDto;
-import ru.tsu.hits.forum.Message.dto.MessageSearchResponseDto;
-import ru.tsu.hits.forum.Message.dto.converter.MessageConverter;
+import ru.tsu.hits.common.dto.messageDto.CreateUpdateMessageDto;
+import ru.tsu.hits.common.dto.messageDto.MessageDto;
+import ru.tsu.hits.common.dto.messageDto.MessageSearchDto;
+import ru.tsu.hits.common.dto.messageDto.MessageSearchResponseDto;
+import ru.tsu.hits.forum.Message.converter.MessageConverter;
 import ru.tsu.hits.forum.Message.entity.MessageEntity;
 import ru.tsu.hits.forum.Message.service.MessageService;
-import ru.tsu.hits.forum.Topic.dto.TopicPagedDto;
+import ru.tsu.hits.common.dto.topicDto.TopicPagedDto;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/message")
+@RequestMapping("/api/forum/message")
 @RequiredArgsConstructor
 public class MessageController {
     private final MessageService messageService;

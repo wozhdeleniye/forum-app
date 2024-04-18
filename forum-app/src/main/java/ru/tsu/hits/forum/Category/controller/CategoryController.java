@@ -1,23 +1,25 @@
 package ru.tsu.hits.forum.Category.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.tsu.hits.forum.Category.dto.CategoryDto;
-import ru.tsu.hits.forum.Category.dto.CreateUpdateCategoryDto;
-import ru.tsu.hits.forum.Category.dto.HierarchyDto;
+import ru.tsu.hits.common.dto.categoryDto.CategoryDto;
+import ru.tsu.hits.common.dto.categoryDto.CreateUpdateCategoryDto;
+import ru.tsu.hits.common.dto.categoryDto.HierarchyDto;
 import ru.tsu.hits.forum.Category.service.CategoryService;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/api/forum/category")
 @RequiredArgsConstructor
 public class CategoryController {
 
     private final CategoryService categoryService;
 
     @PostMapping
+    @PreAuthorize("hasRole('')")
     public CategoryDto create(@RequestBody CreateUpdateCategoryDto createUpdateCategoryDto){
         return categoryService.create(createUpdateCategoryDto);
     }

@@ -7,6 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication()
+@ConfigurationPropertiesScan("ru.tsu.hits.forum")
 public class ForumServer {
 
 	public static void main(String[] args) {

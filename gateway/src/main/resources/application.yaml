@@ -2,14 +2,16 @@ server:
   port: 8009
 
 spring:
+  application:
+    name: gateway
   cloud:
     gateway:
       routes:
         - id: user
           uri: http://localhost:8011/
           predicates:
-            - Path=/user/**
+            - Path=/api/user/**
         - id: forum
           uri: http://localhost:8010/
           predicates:
-            - Path=/forum/**
+            - Path=/api/forum/**

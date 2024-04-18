@@ -8,25 +8,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import ru.tsu.hits.forum.Category.repository.CategoryRepository;
-import ru.tsu.hits.forum.Message.dto.CreateUpdateMessageDto;
-import ru.tsu.hits.forum.Message.dto.MessageDto;
-import ru.tsu.hits.forum.Message.dto.MessageSearchDto;
-import ru.tsu.hits.forum.Message.dto.MessageSearchResponseDto;
-import ru.tsu.hits.forum.Message.dto.converter.MessageConverter;
+import ru.tsu.hits.common.dto.messageDto.CreateUpdateMessageDto;
+import ru.tsu.hits.common.dto.messageDto.MessageDto;
+import ru.tsu.hits.common.dto.messageDto.MessageSearchDto;
+import ru.tsu.hits.common.dto.messageDto.MessageSearchResponseDto;
+import ru.tsu.hits.forum.Message.converter.MessageConverter;
 import ru.tsu.hits.forum.Message.entity.MessageEntity;
 import ru.tsu.hits.forum.Message.repository.MessagePaginationRepository;
 import ru.tsu.hits.forum.Message.repository.MessageRepository;
-import ru.tsu.hits.forum.Topic.dto.converter.TopicConverter;
-import ru.tsu.hits.forum.Topic.entity.TopicEntity;
 import ru.tsu.hits.forum.Topic.repository.TopicRepository;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static ru.tsu.hits.forum.Message.dto.converter.MessageConverter.messageToDto;
-import static ru.tsu.hits.forum.Message.dto.converter.MessageConverter.messageToEntity;
+import static ru.tsu.hits.forum.Message.converter.MessageConverter.messageToDto;
+import static ru.tsu.hits.forum.Message.converter.MessageConverter.messageToEntity;
 
 @Service
 @RequiredArgsConstructor
