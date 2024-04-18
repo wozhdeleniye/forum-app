@@ -1,14 +1,11 @@
-package ru.tsu.hits.user;
+package ru.tsu.hits.multimodule;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
 @SpringBootApplication()
-public class UserServer {
-
+public class GatewayServer {
 	public static void main(String[] args) {
-		SpringApplication.run(UserServer.class, args);
+		SpringApplication.run(GatewayServer.class, args);
 	}
-
 }

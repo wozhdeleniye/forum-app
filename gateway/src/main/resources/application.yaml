@@ -1,0 +1,15 @@
+server:
+  port: 8009
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: user
+          uri: http://localhost:8011/
+          predicates:
+            - Path=/user/**
+        - id: forum
+          uri: http://localhost:8010/
+          predicates:
+            - Path=/forum/**

@@ -19,6 +19,7 @@
         <module>common</module>
 		<module>user-app</module>
 		<module>forum-app</module>
+		<module>gateway</module>
 	</modules>
 
 	<properties>
@@ -28,6 +29,7 @@
 		<lombok.version>1.18.30</lombok.version>
 		<postgresql.version>42.7.2</postgresql.version>
 		<flyway-core.version>10.0.0</flyway-core.version>
+		<spring-gateway.version>3.1.6</spring-gateway.version>
 	</properties>
 
 	<dependencyManagement>
@@ -75,6 +77,12 @@
 				<artifactId>flyway-core</artifactId>
 				<version>${flyway-core.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-starter-gateway</artifactId>
+				<version>${spring-gateway.version}</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 

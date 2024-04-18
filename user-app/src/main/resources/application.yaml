@@ -1,4 +1,9 @@
 spring:
+  flyway:
+    locations: classpath:migrations
+    url: jdbc:postgresql://localhost:5432/spring_db
+    user: postgres
+    password: igromir.04
   datasource:
     url: jdbc:postgresql://localhost:5432/spring_db
     username: postgres
