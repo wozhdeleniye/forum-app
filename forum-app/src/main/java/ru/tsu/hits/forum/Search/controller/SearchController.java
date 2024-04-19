@@ -1,10 +1,9 @@
 package ru.tsu.hits.forum.Search.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.*;
-import ru.tsu.hits.forum.Search.dto.SearchByNameDto;
-import ru.tsu.hits.forum.Search.dto.SearchDataDto;
+import ru.tsu.hits.common.dto.searchDto.SearchByNameDto;
+import ru.tsu.hits.common.dto.searchDto.SearchDataDto;
 import ru.tsu.hits.forum.Search.service.SearchService;
 
 import java.util.Collections;
@@ -12,7 +11,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 @RestController
-@RequestMapping("/search")
+@RequestMapping("/api/forum/search")
 @RequiredArgsConstructor
 public class SearchController {
 

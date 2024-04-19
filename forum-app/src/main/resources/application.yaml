@@ -3,6 +3,7 @@ spring:
     locations: classpath:migrations
     url: jdbc:postgresql://localhost:5432/spring_db
     user: postgres
+    enabled: true
     password: igromir.04
   datasource:
     url: jdbc:postgresql://localhost:5432/spring_db
@@ -12,6 +13,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-
+  application:
+    name: forum
 server:
   port: 8010

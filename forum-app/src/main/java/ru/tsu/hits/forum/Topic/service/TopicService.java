@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import ru.tsu.hits.forum.Category.repository.CategoryRepository;
-import ru.tsu.hits.forum.Exception.dto.StatusCode;
+import ru.tsu.hits.common.dto.exceptionDto.StatusCode;
 import ru.tsu.hits.forum.Message.repository.MessageRepository;
-import ru.tsu.hits.forum.Topic.dto.CreateUpdateTopicDto;
-import ru.tsu.hits.forum.Topic.dto.TopicDto;
+import ru.tsu.hits.common.dto.topicDto.CreateUpdateTopicDto;
+import ru.tsu.hits.common.dto.topicDto.TopicDto;
 import ru.tsu.hits.forum.Topic.entity.TopicEntity;
 import ru.tsu.hits.forum.Topic.repository.TopicPaginationRepository;
 import ru.tsu.hits.forum.Topic.repository.TopicRepository;
@@ -20,8 +20,8 @@ import ru.tsu.hits.forum.Topic.repository.TopicRepository;
 import java.util.Date;
 import java.util.UUID;
 
-import static ru.tsu.hits.forum.Topic.dto.converter.TopicConverter.topicToDto;
-import static ru.tsu.hits.forum.Topic.dto.converter.TopicConverter.topicToEntity;
+import static ru.tsu.hits.forum.Topic.converter.TopicConverter.topicToDto;
+import static ru.tsu.hits.forum.Topic.converter.TopicConverter.topicToEntity;
 
 @Service
 @RequiredArgsConstructor
