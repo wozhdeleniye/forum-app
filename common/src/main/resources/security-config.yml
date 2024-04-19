@@ -1,6 +1,6 @@
 app:
   security: # этот набор свойств парсит SecurityProps
-    jwt-token:
+    jwtToken:
       permit-all:
         - /api/user/register # пример метода регистрации пользователя (нет в проекте)
         - /api/authentication/token

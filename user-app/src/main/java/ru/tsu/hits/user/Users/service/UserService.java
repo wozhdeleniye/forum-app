@@ -85,11 +85,4 @@ public class UserService {
                 .map(UserConverter:: userToDto)
                 .collect(Collectors.toList());
     }
-
-    public UserEntity findByLogin(String login) {
-        return userFindRepository.findFirstByLogin(login)
-                .stream()
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Incorrect login: " + login));
-    }
 }

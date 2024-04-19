@@ -11,7 +11,6 @@ import ru.tsu.hits.common.dto.userDto.UserRoleDto;
 import ru.tsu.hits.common.security.exception.BlockedException;
 import ru.tsu.hits.common.security.exception.UnauthorizedException;
 import ru.tsu.hits.common.security.props.SecurityProps;
-import ru.tsu.hits.common.dto.userDto.CreateUpdateUserDto;
 import ru.tsu.hits.user.Users.entity.UserEntity;
 import ru.tsu.hits.user.Users.repository.UserFindRepository;
 
@@ -26,12 +25,11 @@ import static java.lang.System.currentTimeMillis;
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-    private final UserService userService;
-
     private final SecurityProps securityProps;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    private final UserFindRepository userFindRepository;
 
     /**
      * Генерация токена
@@ -40,7 +38,10 @@ public class AuthenticationService {
      * @return строка с jwt
      */
     public String generateJwt(LoginDto loginDto) {
-        var user = userService.findByLogin(loginDto.getLogin());
+        var user = userFindRepository.findFirstByLogin(loginDto.getLogin())
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Incorrect login: " + loginDto.getLogin()));
         if(user.getRole() == UserRoleDto.BlOCKED){
             throw new BlockedException("You were blocked by admin");
         }
@@ -75,4 +76,6 @@ public class AuthenticationService {
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
+
+
 }

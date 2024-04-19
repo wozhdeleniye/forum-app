@@ -12,11 +12,11 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create-drop
   application:
     name: user
 
 server:
   port: 8011
 
-spring.config.import: classpath:/application.yaml
+spring.config.import: classpath:/security-config.yml
