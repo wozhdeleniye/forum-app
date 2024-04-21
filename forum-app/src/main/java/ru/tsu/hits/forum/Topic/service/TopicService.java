@@ -5,9 +5,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
+import ru.tsu.hits.common.dto.userDto.UserRoleDto;
+import ru.tsu.hits.common.security.JwtUserData;
+import ru.tsu.hits.common.security.exception.ForbiddenException;
 import ru.tsu.hits.forum.Category.repository.CategoryRepository;
 import ru.tsu.hits.common.dto.exceptionDto.StatusCode;
 import ru.tsu.hits.forum.Message.repository.MessageRepository;
@@ -58,9 +62,14 @@ public class TopicService {
     }
 
     @Transactional
-    public ResponseEntity<?> edit(String id, CreateUpdateTopicDto createUpdateTopicDto){
+    public ResponseEntity<?> edit(String id, CreateUpdateTopicDto createUpdateTopicDto, Authentication auth){
         var entity  = topicRepository.findById(id)
                 .orElseThrow(() -> new HttpClientErrorException((HttpStatus.NOT_FOUND)));
+
+        var user = (JwtUserData)auth.getPrincipal();
+        if((!user.getRole().equals(UserRoleDto.ADMINISTRATOR.toString())) || (!user.getId().toString().equals(entity.getAuthor()))){
+            throw new ForbiddenException("У вас нет прав изменять этот топик");
+        }
         entity.setName(createUpdateTopicDto.getName());
         var categoryEntity = categoryRepository.findById(createUpdateTopicDto.getParentCategory())
                 .orElseThrow(() -> new HttpClientErrorException((HttpStatus.NOT_FOUND)));
@@ -82,9 +91,14 @@ public class TopicService {
     }
 
     @Transactional
-    public void delete(String id){
+    public void delete(String id, Authentication auth){
         var entity  = topicRepository.findById(id)
                 .orElseThrow(() -> new HttpClientErrorException((HttpStatus.NOT_FOUND)));
+
+        var user = (JwtUserData)auth.getPrincipal();
+        if((!user.getRole().equals(UserRoleDto.ADMINISTRATOR.toString())) || (!user.getId().toString().equals(entity.getAuthor()))){
+            throw new ForbiddenException("У вас нет прав удалить этот топик");
+        }
         topicRepository.delete(entity);
         var messageEntity = messageRepository.findAllByTopic(UUID.fromString(id));
         messageRepository.deleteAll(messageEntity);

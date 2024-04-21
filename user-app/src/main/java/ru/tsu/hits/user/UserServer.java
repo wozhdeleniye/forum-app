@@ -7,11 +7,10 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportResource;
 import ru.tsu.hits.common.security.SbAuthSecurityConfig;
 
+@ConfigurationPropertiesScan("ru.tsu.hits.user")
 @SpringBootApplication()
-@ConfigurationPropertiesScan("ru.tsu.hits")
 @Import({SbAuthSecurityConfig.class})
-@ImportResource({"classpath:security-config.yml"})
-public class UserServer {
+public class  UserServer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(UserServer.class, args);

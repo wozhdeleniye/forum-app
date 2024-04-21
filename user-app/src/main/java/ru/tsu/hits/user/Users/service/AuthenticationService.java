@@ -11,7 +11,9 @@ import ru.tsu.hits.common.dto.userDto.UserRoleDto;
 import ru.tsu.hits.common.security.exception.BlockedException;
 import ru.tsu.hits.common.security.exception.UnauthorizedException;
 import ru.tsu.hits.common.security.props.SecurityProps;
+import ru.tsu.hits.user.Users.converter.UserConverter;
 import ru.tsu.hits.user.Users.entity.UserEntity;
+import ru.tsu.hits.user.Users.repository.TokenRepository;
 import ru.tsu.hits.user.Users.repository.UserFindRepository;
 
 import java.nio.charset.StandardCharsets;
@@ -31,6 +33,7 @@ public class AuthenticationService {
 
     private final UserFindRepository userFindRepository;
 
+    private final TokenRepository tokenRepository;
     /**
      * Генерация токена
      *
@@ -54,7 +57,7 @@ public class AuthenticationService {
                 .setClaims(Map.of(
                         "login", user.getLogin(),
                         "name", user.getName(),
-                        "role", user.getRole()
+                        "role", user.getRole().toString()
                 ))
                 .setId(UUID.randomUUID().toString())
                 .setExpiration(new Date(currentTimeMillis() + securityProps.getJwtToken().getExpiration()))
@@ -62,14 +65,41 @@ public class AuthenticationService {
                 .compact();
     }
 
-    public String generateRegToken(UserEntity userEntity) {
+    public String generateNewAccessToken(UserEntity userEntity) {
         var key = Keys.hmacShaKeyFor(securityProps.getJwtToken().getSecret().getBytes(StandardCharsets.UTF_8));
-        return Jwts.builder()
+        var token = Jwts.builder()
                 .setSubject(userEntity.getName())
                 .setClaims(Map.of(
                         "login", userEntity.getLogin(),
                         "name", userEntity.getName(),
-                        "role", userEntity.getRole()
+                        "role", userEntity.getRole().toString()
+                ))
+                .setId(UUID.randomUUID().toString())
+                .setExpiration(new Date(currentTimeMillis() + securityProps.getJwtToken().getExpiration()))
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+        tokenRepository.save(UserConverter.tokenToEntity(token, userEntity.getLogin()));
+        return token;
+    }
+
+    public String generateTokenByToken(String token) {
+        var refToken = tokenRepository.findFirstByToken(token)
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Incorrect refresh token"));
+
+        var user = userFindRepository.findFirstByLogin(refToken.getLogin())
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Incorrect login in token"));
+
+        var key = Keys.hmacShaKeyFor(securityProps.getJwtToken().getSecret().getBytes(StandardCharsets.UTF_8));
+        return Jwts.builder()
+                .setSubject(user.getName())
+                .setClaims(Map.of(
+                        "login", user.getLogin(),
+                        "name", user.getName(),
+                        "role", user.getRole().toString()
                 ))
                 .setId(UUID.randomUUID().toString())
                 .setExpiration(new Date(currentTimeMillis() + securityProps.getJwtToken().getExpiration()))

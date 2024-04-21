@@ -3,12 +3,16 @@ package ru.tsu.hits.forum.Category.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import ru.tsu.hits.common.dto.categoryDto.CategoryDto;
 import ru.tsu.hits.common.dto.categoryDto.CreateUpdateCategoryDto;
 import ru.tsu.hits.common.dto.categoryDto.HierarchyDto;
+import ru.tsu.hits.common.dto.userDto.UserRoleDto;
+import ru.tsu.hits.common.security.JwtUserData;
+import ru.tsu.hits.common.security.exception.ForbiddenException;
 import ru.tsu.hits.forum.Category.converter.CategoryConverter;
 import ru.tsu.hits.forum.Category.entity.CategoryEntity;
 import ru.tsu.hits.forum.Category.repository.CategoryRepository;
@@ -31,7 +35,11 @@ public class CategoryService {
     private final MessageRepository messageRepository;
 
     @Transactional
-    public CategoryDto create(CreateUpdateCategoryDto createUpdateCategoryDto){
+    public CategoryDto create(CreateUpdateCategoryDto createUpdateCategoryDto, Authentication auth){
+        var user = (JwtUserData)auth.getPrincipal();
+        if(!user.getRole().equals(UserRoleDto.ADMINISTRATOR.toString())){
+            throw new ForbiddenException("Вы не админ, чтобы создавать категорию");
+        }
         if(createUpdateCategoryDto.getParentCategory() != ""){
             var parentEntity = categoryRepository.findById(createUpdateCategoryDto.getParentCategory())
                 .orElseThrow(() -> new HttpClientErrorException((HttpStatus.NOT_FOUND)));
@@ -56,7 +64,11 @@ public class CategoryService {
     }
 
     @Transactional
-    public CategoryDto edit(String id, CreateUpdateCategoryDto createUpdateCategoryDto){
+    public CategoryDto edit(String id, CreateUpdateCategoryDto createUpdateCategoryDto, Authentication auth){
+        var user = (JwtUserData)auth.getPrincipal();
+        if(!user.getRole().equals(UserRoleDto.ADMINISTRATOR.toString())){
+            throw new ForbiddenException("Вы не админ, чтобы редактировать категорию");
+        }
         var entity  = categoryRepository.findById(id)
                 .orElseThrow(() -> new HttpClientErrorException((HttpStatus.NOT_FOUND)));
 
@@ -71,7 +83,11 @@ public class CategoryService {
     }
 
     @Transactional
-    public void delete(String id){
+    public void delete(String id, Authentication auth){
+        var user = (JwtUserData)auth.getPrincipal();
+        if(!user.getRole().equals(UserRoleDto.ADMINISTRATOR.toString())){
+            throw new ForbiddenException("Вы не админ, чтобы удалять категорию");
+        }
         var entity  = categoryRepository.findById(id)
                 .orElseThrow(() -> new HttpClientErrorException((HttpStatus.NOT_FOUND)));
         categoryRepository.delete(entity);

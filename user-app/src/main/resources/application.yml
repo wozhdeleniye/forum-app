@@ -1,22 +1,11 @@
+spring.config.import: classpath:/security.yml
+---
+spring.config.import: classpath:/data-source.yml
+
 spring:
-  flyway:
-    locations: classpath:migrations
-    url: jdbc:postgresql://localhost:5432/spring_db
-    user: postgres
-    password: igromir.04
-    enabled: true
-  datasource:
-    url: jdbc:postgresql://localhost:5432/spring_db
-    username: postgres
-    password: igromir.04
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: create-drop
   application:
     name: user
 
 server:
   port: 8011
 
-spring.config.import: classpath:/security-config.yml

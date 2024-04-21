@@ -4,6 +4,7 @@ package ru.tsu.hits.user.Users.converter;
 import ru.tsu.hits.common.dto.userDto.CreateUpdateUserDto;
 import ru.tsu.hits.common.dto.userDto.UserDto;
 import ru.tsu.hits.common.dto.userDto.UserRoleDto;
+import ru.tsu.hits.user.Users.entity.RefreshToken;
 import ru.tsu.hits.user.Users.entity.UserEntity;
 
 import java.util.Date;
@@ -32,6 +33,14 @@ public class UserConverter {
                 entity.getRole(),
                 entity.getEmail(),
                 entity.getPhone()
+        );
+    }
+
+    public static RefreshToken tokenToEntity(String token, String login){
+        return new RefreshToken(
+                UUID.randomUUID().toString(),
+                token,
+                login
         );
     }
 }

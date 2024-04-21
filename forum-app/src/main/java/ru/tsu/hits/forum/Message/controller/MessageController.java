@@ -3,11 +3,13 @@ package ru.tsu.hits.forum.Message.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.tsu.hits.common.dto.messageDto.CreateUpdateMessageDto;
 import ru.tsu.hits.common.dto.messageDto.MessageDto;
 import ru.tsu.hits.common.dto.messageDto.MessageSearchDto;
 import ru.tsu.hits.common.dto.messageDto.MessageSearchResponseDto;
+import ru.tsu.hits.common.security.exception.ForbiddenException;
 import ru.tsu.hits.forum.Message.converter.MessageConverter;
 import ru.tsu.hits.forum.Message.entity.MessageEntity;
 import ru.tsu.hits.forum.Message.service.MessageService;
@@ -28,22 +30,22 @@ public class MessageController {
         return messageService.create(createUpdateMessageDto);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("get/{id}")
     public MessageDto get(@PathVariable UUID id){
         return messageService.getById(id.toString());
     }
 
     @PutMapping("/{id}")
-    public MessageDto update(@PathVariable UUID id, @RequestBody CreateUpdateMessageDto createUpdateMessageDto){
-        return messageService.edit(id.toString(), createUpdateMessageDto);
+    public MessageDto update(@PathVariable UUID id, @RequestBody CreateUpdateMessageDto createUpdateMessageDto, Authentication auth) throws ForbiddenException {
+        return messageService.edit(id.toString(), createUpdateMessageDto, auth);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable UUID id){
-        messageService.delete(id.toString());
+    public void delete(@PathVariable UUID id, Authentication auth) throws ForbiddenException{
+        messageService.delete(id.toString(), auth);
     }
 
-    @GetMapping("/paged")
+    @GetMapping("get/paged")
     public TopicPagedDto<MessageDto> getMessages(
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "20") int size
@@ -61,7 +63,7 @@ public class MessageController {
         return pagedDataDto;
     }
 
-    @GetMapping("/text")
+    @GetMapping("get/text")
     public List<MessageSearchResponseDto> getMessagedByParams(
             @RequestParam(required = false, defaultValue = "") String cat,
             @RequestParam(required = false, defaultValue = "") String top,

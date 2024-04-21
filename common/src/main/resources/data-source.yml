@@ -1,0 +1,15 @@
+spring:
+  flyway:
+    locations: classpath:migrations
+    url: jdbc:postgresql://localhost:5432/spring_db
+    user: postgres
+    password: igromir.04
+    enabled: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/spring_db
+    username: postgres
+    password: igromir.04
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate

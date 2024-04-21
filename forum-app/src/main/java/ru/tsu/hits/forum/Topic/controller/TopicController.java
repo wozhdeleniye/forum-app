@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.tsu.hits.common.dto.topicDto.CreateUpdateTopicDto;
 import ru.tsu.hits.common.dto.topicDto.TopicDto;
@@ -26,22 +27,22 @@ public class TopicController {
         return topicService.create(createUpdateTopicDto);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("get/{id}")
     public TopicDto get(@PathVariable UUID id){
         return topicService.getById(id.toString());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable UUID id, @RequestBody CreateUpdateTopicDto createUpdateTopicDto){
-        return topicService.edit(id.toString(), createUpdateTopicDto);
+    public ResponseEntity<?> update(@PathVariable UUID id, @RequestBody CreateUpdateTopicDto createUpdateTopicDto, Authentication auth) {
+        return topicService.edit(id.toString(), createUpdateTopicDto, auth);
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable UUID id){
-        topicService.delete(id.toString());
+    public void delete(@PathVariable UUID id, Authentication auth){
+        topicService.delete(id.toString(), auth);
     }
 
-    @GetMapping("/paged")
+    @GetMapping("get/paged")
     public TopicPagedDto<TopicDto> getTopics(
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size
